@@ -22,7 +22,7 @@ jobs:
       - name: Build Backend
         run: |
           go mod download
-          go build -ldflags "-s -w' -extldflags '-static'" -o openai-mocker
+          go build -o openai-mocker
 
       - name: Release
         uses: softprops/action-gh-release@v1
