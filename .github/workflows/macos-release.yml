@@ -1,0 +1,36 @@
+name: macOS Release
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - '*'
+      - '!*-alpha*'
+jobs:
+  release:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.18.0'
+      - name: Build Backend
+        run: |
+          go mod download
+          go build -ldflags "-s -w' -extldflags '-static'" -o openai-mocker
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            openai-mocker
+          draft: true
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
