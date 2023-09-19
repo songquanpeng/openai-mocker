@@ -22,14 +22,14 @@ jobs:
       - name: Build Backend
         run: |
           go mod download
-          go build -o openai-mocker
+          go build -o openai-mocker-macos
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            openai-mocker
+            openai-mocker-macos
           draft: false
           generate_release_notes: true
         env:
