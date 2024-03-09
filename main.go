@@ -37,6 +37,7 @@ func main() {
 		if len(chatRequest.Messages) != 0 {
 			prompt = chatRequest.Messages[len(chatRequest.Messages)-1].Content
 		}
+		response := prompt2response(prompt)
 
 		if chatRequest.Stream {
 			setEventStreamHeaders(c)
@@ -50,9 +51,9 @@ func main() {
 			}
 			streamResponseChoice := ChatCompletionsStreamResponseChoice{}
 			go func() {
-				for i, s := range prompt {
+				for i, s := range response {
 					streamResponseChoice.Delta.Content = string(s)
-					if i == len(prompt)-1 {
+					if i == len(response)-1 {
 						streamResponseChoice.FinishReason = &stopReason
 					}
 					streamResponse.Choices = []ChatCompletionsStreamResponseChoice{streamResponseChoice}
