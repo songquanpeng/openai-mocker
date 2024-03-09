@@ -129,8 +129,8 @@ func prompt2response(subject string) string {
 		"最后，感谢你观看全文。不要忘了点个“赞+喜欢”！",
 	}
 
-	if subject[len(subject)-3:] == "？" || subject[len(subject)-1:] == "?" {
-		subject = subject[:len(subject)-3]
+	if strings.HasSuffix(subject, "?") || strings.HasSuffix(subject, "？") {
+		subject = subject[:len(subject)-1]
 	}
 	var content string
 
